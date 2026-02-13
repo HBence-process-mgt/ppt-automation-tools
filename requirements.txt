@@ -1,0 +1,3 @@
+# Project dependencies
+# Windows-only dependency for COM automation
+pywin32; sys_platform == "win32"
