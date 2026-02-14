@@ -8,18 +8,22 @@ placeholder = ""
 updated_count = 0
 
 for slide in presentation.Slides:
-    for shape in slide.Shapes:
-        if shape.HasTitle:
-            placeholder = shape.Title.TextFrame.TextRange.Text
-            shape.Title.TextFrame.TextRange.text = ""
-            shape.TextFrame.TextRange.Font.Reset()
-            shape.TextFrame.TextRange.ParagraphFormat.Reset()
-            shape.TextFrame.TextRange.IndentLevel.Reset()
-            shape.TextFrame.TextRange.Text = placeholder
-            shape.TextFrame.TextRange.Font.Size = size
+    if slide.Shapes.HasTitle:
+        title = slide.Shapes.Title
+        if title is not None:
+            placeholder = title.TextFrame.TextRange.Text
+            title.TextFrame.TextRange.Text = ""
+            title.Delete()
+            slide.Shapes.AddTitle()
+            title = slide.Shapes.Title
+            title.TextFrame.AutoSize = 0
+            title.TextFrame.TextRange.Text = placeholder
+            title.TextFrame.TextRange.Font.Size = size
             updated_count += 1
         else:
             continue
+    else:
+        continue
 
 print(f"Updated {updated_count} title(s)")
 print("Script effects can be reversed with the Undo button or Ctrl+Z in PowerPoint.")
